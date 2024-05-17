@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Proceso extends Model
 {
     use HasFactory;
+    protected $table = 'pro_procesos';
+    protected $primaryKey = 'pro_id';
+    protected $fillable = ['pro_nombre', 'pro_prefijo'];
 }
