@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ProcesoControlador extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class ProcesoControlador extends Controller
      */
     public function create()
     {
-        //
+        return view('creacionUsuario');
     }
 
     /**
@@ -28,7 +28,20 @@ class ProcesoControlador extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validarDatos= $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = new \App\Models\User();
+        $user->name = $validarDatos['name'];
+        $user->email = $validarDatos['email'];
+        $user->password = bcrypt($validarDatos['password']);
+        $user->save();
+
+        return redirect()->route('login')->with('Creacion exitosa', 'Usuario creado correctamete');
+
     }
 
     /**
