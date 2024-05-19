@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use \App\Models\Tipo_documento;
 
 class TipoDocController extends Controller
 {
@@ -12,7 +13,8 @@ class TipoDocController extends Controller
      */
     public function index()
     {
-        //
+        $tipos = Tipo_documento::all();
+        return view('tipo_documentos.index', compact('tipos'));
     }
 
     /**
@@ -20,7 +22,7 @@ class TipoDocController extends Controller
      */
     public function create()
     {
-        //
+        return view('tipo_documentos.crear');
     }
 
     /**
@@ -28,7 +30,17 @@ class TipoDocController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validarDatos= $request->validate([
+            'nombre' => 'required|string|max:255',
+            'prefijo' => 'required|string|max:255',
+        ]);
+
+        $tipo = new Tipo_documento();
+        $tipo->tip_nombre = $validarDatos['nombre'];
+        $tipo->tip_prefijo = $validarDatos['prefijo'];
+        $tipo->save();
+
+        return redirect()->route('tipo.index');
     }
 
     /**
@@ -36,7 +48,8 @@ class TipoDocController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tipos = Tipo_documento::find($id);
+        return redirect()->route('tipo.edit', ['tipo' => $id]);
     }
 
     /**
@@ -44,15 +57,22 @@ class TipoDocController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $tipo = Tipo_documento::find($id);
+        
+        return view('tipo_documentos.editar', compact('tipo'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $tipo = Tipo_documento::find($id);
+        $tipo->tip_nombre = $request->nombre;
+        $tipo->tip_prefijo = $request->prefijo;
+        
+        $tipo->save();
+        return redirect()->route('tipo.index');
     }
 
     /**
@@ -60,6 +80,9 @@ class TipoDocController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tipo = Tipo_documento::find($id);
+        $tipo->delete();
+
+        return redirect()->route('tipo.index');
     }
 }

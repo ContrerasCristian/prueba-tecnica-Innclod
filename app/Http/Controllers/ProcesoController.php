@@ -4,23 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use \App\Models\Proceso;
 
 class ProcesoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $procesos = Proceso::all();
+        return view('proceso_documentos.index', compact('procesos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('proceso_documentos.crear');
     }
 
     /**
@@ -28,7 +24,17 @@ class ProcesoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validarDatos= $request->validate([
+            'pro_nombre' => 'required|string|max:255',
+            'pro_prefijo' => 'required|string|max:255',
+        ]);
+
+        $proceso = new Proceso();
+        $proceso->pro_nombre = $validarDatos['pro_nombre'];
+        $proceso->pro_prefijo = $validarDatos['pro_prefijo'];
+        $proceso->save();
+
+        return redirect()->route('procesos.index')->with('Creacion exitosa', 'Proceso creado correctamete');
     }
 
     /**
@@ -36,7 +42,8 @@ class ProcesoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $proceso = Proceso::find($id);
+        return view('proceso_documentos.editar', compact('proceso'));
     }
 
     /**
@@ -44,15 +51,21 @@ class ProcesoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $proceso = Proceso::find($id);
+        $proceso->pro_nombre = $request->pro_nombre;
+        $proceso->pro_prefijo = $request->pro_prefijo;
+        
+        $proceso->save();
+
+        return redirect()->route('procesos.index');
     }
 
     /**
@@ -60,6 +73,8 @@ class ProcesoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $proceso = Proceso::find($id);
+        $proceso->delete();
+        return redirect()->route('procesos.index');
     }
 }

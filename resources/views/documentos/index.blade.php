@@ -1,7 +1,10 @@
 @extends('documentos')
 
 @section('content')
-<h1>Documentos</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Documentos</h1>
+    <button type="button" class="btn btn-outline-primary">Crear documento</button>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -27,3 +30,4 @@
         {{-- @endforeach --}}
     </tbody>
 </table>
+@endsection
