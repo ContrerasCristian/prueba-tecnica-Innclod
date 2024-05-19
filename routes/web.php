@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function (){
     Route::patch('/proceso/{id}', [ProcesoController::class, 'update'])->name('proceso-actualizar');
     Route::delete('/proceso/{id}', [ProcesoController::class, 'destroy'])->name('proceso-eliminar');
     Route::resource('tipo', TipoDocController::class);
+    Route::resource('documento', DocumentoController::class);
 });
 
 

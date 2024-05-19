@@ -3,7 +3,7 @@
 <form action="{{route('proceso-actualizar', ['id' => $proceso->pro_id])}}" method="POST">
     @method('PATCH')
     @csrf
-    <input type="hidden" name="prod_id" value="{{$proceso->prod}}">
+    <input type="hidden" name="prod_id" value="{{$proceso->prod_id}}">
     <div class="row mb-3">
         <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre Proceso</label>
         <div class="col-sm-10">

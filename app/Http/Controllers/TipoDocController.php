@@ -48,7 +48,6 @@ class TipoDocController extends Controller
      */
     public function show(string $id)
     {
-        $tipos = Tipo_documento::find($id);
         return redirect()->route('tipo.edit', ['tipo' => $id]);
     }
 
